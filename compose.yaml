@@ -12,10 +12,7 @@ services:
       TZ: Etc/GMT+3
     volumes:
       - ./jenkins_home:/var/jenkins_home
-      # AQUI ESTA A CORREÇÃO CRÍTICA:
-      # Lado esquerdo (Host): Onde seu docker está rodando
-      # Lado direito (Container): Onde o Jenkins PROCURA o docker
-      - /run/user/1000/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - default
     restart: unless-stopped
