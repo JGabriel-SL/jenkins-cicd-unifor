@@ -2,21 +2,24 @@ services:
   jenkins:
     build: ./jenkins
     container_name: jenkins-ci
-    user: root  # Necessário para acessar o docker.sock sem conflito de permissões
+    user: root  # Mantido root para evitar permissão negada no socket
     privileged: true
     ports:
       - "8080:8080"
     environment:
-      DOCKER_HOST: unix:///run/user/1000/docker.sock
+      # DOCKER_HOST removido, vamos usar o padrão
       JENKINS_HOME_HOST: ./jenkins_home
       TZ: Etc/GMT+3
     volumes:
       - ./jenkins_home:/var/jenkins_home
-      - /run/user/1000/docker.sock:/run/user/1000/docker.sock
+      # AQUI ESTA A CORREÇÃO CRÍTICA:
+      # Lado esquerdo (Host): Onde seu docker está rodando
+      # Lado direito (Container): Onde o Jenkins PROCURA o docker
+      - /run/user/1000/docker.sock:/var/run/docker.sock
     networks:
       - default
-      # - kind
     restart: unless-stopped
+
   sonarqube:
     image: sonarqube:lts
     container_name: sonarqube
@@ -27,11 +30,8 @@ services:
       - sonarqube-extensions:/opt/sonarqube/extensions
       - sonarqube-logs:/opt/sonarqube/logs
     restart: unless-stopped
+
 volumes:
   sonarqube-data:
   sonarqube-extensions:
   sonarqube-logs:
-# networks:
-#   kind:
-#     external: true
-#     name: kind

@@ -17,7 +17,7 @@ pipeline {
         sh '''
           set -e
           cd "${WORKSPACE}"
-          trivy fs --no-progress --exclude-dir .venv .
+          trivy fs --no-progress --skip-dirs .venv .
         '''
       }
     }
