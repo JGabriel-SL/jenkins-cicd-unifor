@@ -94,13 +94,13 @@ pipeline {
 
             git config user.name "jenkins"
             git config user.email "jenkins@local"
-
+  
             git commit -m "Update deploy image tag to ${TAG}"
-            git push https://${GITHUB_USER}:${GITHUB_TOKEN}@https://github.com/JGabriel-SL/jenkins-cicd-unifor.git HEAD:main
+            git push https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/JGabriel-SL/jenkins-cicd-unifor.git HEAD:main
 
             git tag -a "$TAG" -m "Release $TAG"
 
-            git push https://${GITHUB_USER}:${GITHUB_TOKEN}@https://github.com/JGabriel-SL/jenkins-cicd-unifor.git "$TAG"
+            git push https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/JGabriel-SL/jenkins-cicd-unifor.git "$TAG"
 
             docker tag "${IMAGE}" "sample-python-ci:${TAG}"
           '''
