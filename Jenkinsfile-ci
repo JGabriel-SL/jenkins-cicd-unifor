@@ -45,6 +45,7 @@ pipeline {
             export SONAR_HOST_URL="${SONAR_HOST_URL:-http://sonarqube:9000}"
             export SONAR_DOCKER_NETWORK="${SONAR_DOCKER_NETWORK:-sample-jenkins-ci_default}"
             docker run --rm \
+              -u 0 \
               -e SONAR_HOST_URL \
               -e SONAR_TOKEN \
               -e SONAR_PROJECT_KEY \
